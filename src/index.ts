@@ -58,8 +58,13 @@ app.post("/github", async (c) => {
 	const discordResponse = await fetch(webhookUrl, {
 		method: "POST",
 		headers: {
-			"content-type": contentType,
-			"user-agent": "worker-scripts/github-proxy",
+			"Content-Type": contentType,
+			"User-Agent": "worker-scripts/github-proxy",
+			"X-GitHub-Delivery": c.req.header("x-github-delivery") ?? "",
+			"X-GitHub-Event": c.req.header("x-github-event") ?? "",
+			"X-GitHub-Hook-ID": c.req.header("x-github-hook-id") ?? "",
+			"X-GitHub-Hook-Installation-Target-ID": c.req.header("x-github-hook-installation-target-id") ?? "",
+			"X-GitHub-Hook-Installation-Target-Type": c.req.header("x-github-hook-installation-target-type") ?? "",
 		},
 		body: bodyText,
 	});
@@ -74,7 +79,7 @@ app.post("/github", async (c) => {
 		);
 	}
 
-	return c.json({ status: "forwarded", res: await discordResponse.json() }, 200);
+	return c.json({ status: "forwarded", res: await discordResponse.text() }, 200);
 });
 
 // Export the Hono app
