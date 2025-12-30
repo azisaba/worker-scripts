@@ -74,7 +74,7 @@ app.post("/github", async (c) => {
 		);
 	}
 
-	return c.json({ status: "forwarded" }, 200);
+	return c.json({ status: "forwarded", res: await discordResponse.json() }, 200);
 });
 
 // Export the Hono app
