@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { post as githubPost } from "./endpoints/github";
 import { post as interChatAddGuildMessagePost} from "./endpoints/interchat/add_guild_message";
+import { post as interChatUploadImage} from "./endpoints/interchat/upload_image";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -32,6 +33,7 @@ app.use("*", async (c, next) => {
 
 app.post("/github", githubPost);
 app.post("/interchat/add_guild_message", interChatAddGuildMessagePost);
+app.post("/interchat/upload_image", interChatUploadImage);
 
 // Export the Hono app
 export default app;

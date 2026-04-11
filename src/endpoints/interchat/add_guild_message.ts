@@ -10,6 +10,9 @@ export type Request = {
 
 export async function post(c: AppContext) {
   const request: Request = await c.req.json()
+  if (request.server === "Discord") {
+    return c.json({ status: "rejected", reason: "Discord server not supported" }, 400)
+  }
   await c.env.interchat.prepare("INSERT INTO guild_messages (guild_id, server, sender, message, transliterated_message, timestamp) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(request.guild_id, request.server, request.sender, request.message, request.transliterated_message ?? null, Date.now())
     .run()
